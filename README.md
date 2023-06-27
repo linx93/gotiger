@@ -6,6 +6,12 @@ go tiger
 ### 开发计划
 1. 项目结构设计，参考https://github.com/golang-standards/project-layout
 2. 项目***IOC***、***DI***、***AOP***、***代理***的设计，参考阿里的IOC-golang等，这个需要花时间多思考
+   - 暂定为手动SET方法注入
+   - GET方法获取，包含GET和GETProxy两种
+      - GET获取到的就是原始对象
+      - GETProxy获取到的就是原生对象增强过的代理对象，在这里提供AOP能力
+         - d ddd
+      - 考虑需不需要支持单列模式和原型模式
 3. 配置相关，基于viper、cobra
     - 基础配置读取
     - 环境变量读取
