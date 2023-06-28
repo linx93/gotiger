@@ -49,46 +49,6 @@ func (s *SnowFlake) GetStrId() string {
 	return strconv.Itoa(int(idgen.NextId()))
 }
 
-func (s *SnowFlake) GetNumber() int64 {
+func (s *SnowFlake) GetNumberId() int64 {
 	return idgen.NextId()
-}
-
-type ApplicationContentInterface interface {
-	SetBean[T any](name string, v *T)
-	GetBeanByName[T any](name string) (*T, error)
-	GetProxyBeanByName[T any](name string) (*T, error)
-}
-
-// BeforeFunc 前置处理
-type BeforeFunc func()
-
-// AfterFunc 后置处理
-type AfterFunc func()
-
-type ApplicationContentDefaultImpl[T any] struct {
-	Beans       map[string]*T
-	BeforeFuncs []BeforeFunc
-	AfterFuncs  []AfterFunc
-}
-
-func (a *ApplicationContentDefaultImpl[T]) SetBean(name string, v *T) {
-	//SET BEAN
-	a.Beans[name] = v
-}
-func (a *ApplicationContentDefaultImpl[T]) GetBeanByName(name string) (*T, error) {
-	// get bean
-	a2 := a.Beans[name]
-	return a2, nil
-}
-func (a *ApplicationContentDefaultImpl[T]) GetProxyBeanByName(name string) (*T, error) {
-	// get bean
-	//  思路有问题，这里前置、后置处理是针对bean的而不是上下文的，明天再思考
-	//执行前置处理
-	if len(a.BeforeFuncs) > 0 {
-		for _, beforeFunc := range a.BeforeFuncs {
-			beforeFunc()
-		}
-	}
-	a2 := a.Beans[name]
-	return a2, nil
 }
