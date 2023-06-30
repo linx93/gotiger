@@ -55,7 +55,6 @@ func (a *ApplicationContextDefaultImpl) GetBeanByName(name string) (any, error) 
 
 func (a *ApplicationContextDefaultImpl) GetProxyBeanByName(name string) (any, error) {
 	// get bean
-	a.Beans
 	//执行前置处理
 	for _, beforeFunc := range a.Beans[name].BeforeFuncs {
 		beforeFunc()
@@ -63,8 +62,21 @@ func (a *ApplicationContextDefaultImpl) GetProxyBeanByName(name string) (any, er
 
 	a2 := a.Beans[name]
 
-	for _, afterFunc := range a.AfterFuncs {
+	for _, afterFunc := range a.Beans[name].AfterFuncs {
 		afterFunc()
 	}
 	return a2, nil
+}
+
+type TigerFunc func()
+
+type TigerFuncs func()
+
+type PrimaryKey interface {
+	int | int8 | uint16 | uint32 | uint64 | uint | int8 | uint16 | uint32 | uint64
+}
+
+type BaseService[id PrimaryKey, R any] interface {
+	FindByPrimaryKey(id PrimaryKey) *R
+	FindList() []*R
 }
